@@ -12,6 +12,57 @@ Results of my tests on Reachfar gps trackers V24 and V44
 ## Protocol
 
 ### LK Messages
+
+Official protocol example:
+
+```text
+[3G*2104346361*0008*LK,0,0,4]
+```
+
+Vendor explanation:
+
+- Sent every 4–6 minutes.
+- Maintains TCP long connection.
+- Reports tracker IP/port to the server.
+
+Observed behavior:
+
+- Continues to be sent in power saving mode (`UPLOAD,65535#`).
+- Allows the server to keep communicating with the tracker.
+- Tracker remains reachable for remote commands.
+
+Flespi observations:
+
+- `message.type = LK`
+- Battery level is reported.
+- `steps.count` is reported.
+- `turnover.number` is reported.
+
+Example:
+
+```json
+{
+  "message.type": "LK",
+  "battery.level": 95,
+  "steps.count": 0,
+  "turnover.number": 0
+}
+```
+
+Current interpretation:
+
+- LK is not only a TCP keepalive packet.
+- LK also contains basic device status information.
+
+Unknown:
+
+- Exact meaning of the parameters in:
+
+```text
+LK,0,0,4
+```
+
+- Whether additional status information is present in the raw packet.
 ### CR Command
 ### UPLOAD Command
 ### Alarm Messages
