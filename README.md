@@ -128,6 +128,63 @@ Open questions:
 ## Power Management
 
 ### Power Saving Mode
+
+Command:
+
+```text
+UPLOAD,65535#
+```
+
+Observed behavior:
+
+- No periodic GPS position reports.
+- LK messages continue every 4–6 minutes.
+- Tracker remains connected to the server.
+- Remote commands continue to work.
+- Battery level is still reported through LK messages.
+
+Example:
+
+```text
+UPLOAD,65535#
+↓
+No GPS reports
+↓
+LK every 4–6 min
+↓
+Device remains reachable
+```
+
+CR interaction:
+
+```text
+CR
+↓
+~10 position reports
+↓
+~20 second interval
+↓
+Returns to power saving mode
+```
+
+Verified experimentally:
+
+- `UPLOAD,65535#` accepted by the tracker.
+- GPS reporting stops.
+- LK messages continue.
+- CR works normally while in power saving mode.
+
+Notes:
+
+- The tracker is not completely asleep.
+- Cellular connection remains active.
+- Power consumption is reduced but not zero.
+
+Open questions:
+
+- Does accelerometer activity wake the tracker?
+- Can motion automatically trigger GPS reporting?
+- Is there a configurable motion-based tracking mode?
 ### Battery Behaviour
 ### Solar Charging
 ### LED Consumption
